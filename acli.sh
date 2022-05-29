@@ -25,7 +25,7 @@ find ${ARDUINO_DIRECTORIES_DATA} -name USBDesc.h -print0 | xargs -0 sed -i 's/^#
 # Fix USB class/subclass/protocol
 find ${ARDUINO_DIRECTORIES_DATA} -name USBCore.cpp -print0 | xargs -0 sed -i -e 's/bool _cdcComposite.*;/bool _cdcComposite = false;/;/if (setup.wLength == 8)/i #ifdef CDC_ENABLED' -e '/_cdcComposite = 1/a #endif'
 # Compile all examples for all boards
-BOARDS=('adafruit:samd:adafruit_trinket_m0' 'adafruit:samd:adafruit_itsybitsy_m0' 'adafruit:samd:adafruit_itsybitsy_m4')
+BOARDS=('adafruit:samd:adafruit_trinket_m0')
 for board in "${BOARDS[@]}" ; do
     export ARDUINO_BOARD_FQBN=${board}
     ARDUINO_BOARD_FQBN2=${ARDUINO_BOARD_FQBN//:/.}
@@ -33,6 +33,7 @@ for board in "${BOARDS[@]}" ; do
     find ${MYPROJECT_EXAMPLES} -name '*.ino' -print0 | xargs -0 -n 1 arduino-cli compile --fqbn ${board} --verbose --build-properties build.vid=0x0f0d,build.pid=0x00c1
     # Convert all BIN to UF2 for drag-and-drop burning on boards with UF2 boot loader
     for MYSKETCH in ${MYPROJECT_EXAMPLES}/* ; do
+        echo ${MYSKETCH}/build/${ARDUINO_BOARD_FQBN2}
         pushd ${MYSKETCH}/build/${ARDUINO_BOARD_FQBN2}
         for i in *.bin ; do
             if [[ -f $i ]] ; then
@@ -50,4 +51,4 @@ for board in "${BOARDS[@]}" ; do
         mv *.ino.bin.uf2 ${FIRMWARE}
         popd
     done
-done >errors 2>&1
+done

@@ -41,28 +41,30 @@ void setup() {
 }
 
 void loop() {
-  static uint8_t count = NSButton_Y;
-  if (count > NSButton_Capture) {
-    NSGamepad.releaseAll();
-    count = NSButton_Y;
-  }
-  NSGamepad.press(count);
-  count++;
+  // static uint8_t count = NSButton_Y;
+  // if (count > NSButton_Capture) {
+  //   NSGamepad.releaseAll();
+  //   count = NSButton_Y;
+  // }
 
-  // Move x/y Axis to a new position (16bit)
-  NSGamepad.leftXAxis(random(0xFF));
-  NSGamepad.leftYAxis(random(0xFF));
-  NSGamepad.rightXAxis(random(0xFF));
-  NSGamepad.rightYAxis(random(0xFF));
+  NSGamepad.press(6);
+  NSGamepad.loop(); // This writes the report to the host.
+  delay(100);
 
-  // Go through all dPad positions
-  // values: 0-8 (0==centered)
-  static uint8_t dpad = NSGAMEPAD_DPAD_UP;
-  NSGamepad.dPad(dpad++);
-  if (dpad > NSGAMEPAD_DPAD_UP_LEFT)
-    dpad = NSGAMEPAD_DPAD_UP;
+  NSGamepad.press(7);
+  NSGamepad.loop(); // This writes the report to the host.
+  delay(100);
 
-  // Functions above only set the values.
-  // This writes the report to the host.
-  NSGamepad.loop();
+  NSGamepad.release(6);
+  NSGamepad.loop(); // This writes the report to the host.
+  delay(100);
+
+  NSGamepad.release(7);
+  NSGamepad.loop(); // This writes the report to the host.
+  delay(100);
+
+
+//   NSGamepad.releaseAll();
+//   NSGamepad.loop();
+// delay(10);
 }

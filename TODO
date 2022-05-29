@@ -1,0 +1,7 @@
+From build log, grab string like "/tmp/arduino-sketch-CE856A46BD103D6A81CCD68D6FA90805/NSGamepadDemo.ino.hex"
+
+cp /tmp/arduino-sketch-CE856A46BD103D6A81CCD68D6FA90805/NSGamepadDemo.ino.hex .
+
+tools/uf2conv.py -c NSGamepadDemo.ino.hex -o NSGamepadDemo.uf2
+
+Copy NSGamepadDemo.uf2 to board.
